@@ -12,16 +12,16 @@ Content-Type: application/json
     "capacidade" : 1
 }
 
-### Listar salas
+### Listar
 GET http://localhost:5136/api/sala/listar
 
 ### Alterar
-PUT http://localhost:5136/api/sala/alterar/Arquibancada
+PUT http://localhost:5136/api/sala/alterar/Sala%201%20Transparencia
 Content-Type: application/json
 
 {
-    "nome" : "Sala 5 - Arquibancada",
-    "capacidade" : 12
+    "nome" : "Sala 1 - Transparencia",
+    "capacidade" : 2
 }
 
 ### Remover
@@ -33,5 +33,5 @@ Content-Type: application/json
     "capacidade" : 2
 }
 
-### Buscar
+### Buscar sala específica
 GET http://localhost:5136/api/sala/buscar/Arquibancada
