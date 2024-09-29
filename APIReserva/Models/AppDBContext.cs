@@ -1,3 +1,5 @@
+// AppDBContext.cs
+
 using Microsoft.EntityFrameworkCore;
 
 namespace APIReserva.Models

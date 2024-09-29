@@ -14,5 +14,4 @@ public class Sala
     public string? Nome { get; set; }
     public int Capacidade { get; set; }
     public DateTime CriadoEm { get; set; }
-    public List<Reserva> Reservas { get; set; } = new List<Reserva>();
 }
