@@ -42,8 +42,8 @@ Content-Type: application/json
 
 {
     "NomeSala": "Sala 2 - Flexibilidade",
-    "DataInicio": "2024-09-29T09:00:00",
-    "DataFim": "2024-09-29T11:00:00",
+    "DataInicio": "2024-09-29T12:00:00",
+    "DataFim": "2024-09-29T13:00:00",
     "NomePessoa": "João Silva"
 }
 
