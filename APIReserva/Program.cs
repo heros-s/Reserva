@@ -55,7 +55,7 @@ app.MapDelete("/api/sala/remover", async (AppDbContext db, [FromBody] Sala sala)
 // PUT: /api/sala/alterar/{nome}
 app.MapPut("/api/sala/alterar/{nome}", async (AppDbContext db, [FromRoute] string nome, [FromBody] Sala salaAtualizada) =>
 {
-    var sala = await db.Salas.FirstOrDefaultAsync(p => p.Nome.Equals(nome, StringComparison.OrdinalIgnoreCase));
+    var sala = await db.Salas.FirstOrDefaultAsync(p => p.Nome.ToLower() == nome.ToLower());
     if (sala == null)
     {
         return Results.NotFound();
@@ -71,7 +71,7 @@ app.MapPut("/api/sala/alterar/{nome}", async (AppDbContext db, [FromRoute] strin
 //GET: /api/sala/buscar/{nome}
 app.MapGet("/api/sala/buscar/{nome}", async (AppDbContext db, string nome) =>
 {
-    var sala = await db.Salas.FirstOrDefaultAsync(p => p.Nome == nome);
+    var sala = await db.Salas.FirstOrDefaultAsync(p => p.Nome.ToLower() == nome.ToLower());
     if (sala != null)
     {
         return Results.Ok(sala);
@@ -82,7 +82,7 @@ app.MapGet("/api/sala/buscar/{nome}", async (AppDbContext db, string nome) =>
 //POST: /api/reserva/cadastrar
 app.MapPost("/api/reserva/cadastrar", async (AppDbContext db, [FromBody] Reserva reserva) =>
 {
-    var sala = await db.Salas.FirstOrDefaultAsync(p => p.Nome.Equals(reserva.NomeSala, StringComparison.OrdinalIgnoreCase));
+    var sala = await db.Salas.FirstOrDefaultAsync(p => p.Nome.ToLower() == reserva.NomeSala.ToLower());
     if (sala == null)
     {
         return Results.NotFound(new { message = $"Sala com nome '{reserva.NomeSala}' não encontrada." });
@@ -90,7 +90,7 @@ app.MapPost("/api/reserva/cadastrar", async (AppDbContext db, [FromBody] Reserva
 
     // Verificar se já existe uma reserva para a sala no intervalo de tempo especificado
     var conflitoReserva = await db.Reservas.AnyAsync(r =>
-        r.NomeSala.Equals(reserva.NomeSala, StringComparison.OrdinalIgnoreCase) &&
+        r.NomeSala.ToLower() == reserva.NomeSala.ToLower() &&
         ((reserva.DataInicio >= r.DataInicio && reserva.DataInicio < r.DataFim) ||
          (reserva.DataFim > r.DataInicio && reserva.DataFim <= r.DataFim) ||
          (reserva.DataInicio <= r.DataInicio && reserva.DataFim >= r.DataFim)));
