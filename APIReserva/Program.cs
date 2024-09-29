@@ -1,6 +1,6 @@
 // Program.cs
 
-using APIReserva.Classes;
+using APIReserva.Models;
 using Microsoft.AspNetCore.Mvc;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -14,6 +14,8 @@ List<Sala> salas = new List<Sala>
             new Sala { Nome = "Sala 4 - Inovacao", Capacidade = 4, CriadoEm = DateTime.Now.AddDays(-4) },
             new Sala { Nome = "Arquibancada", Capacidade = 12, CriadoEm = DateTime.Now.AddDays(-5) },
         };
+
+List<Reserva> reservas = new List<Reserva>();
 
 //GET: /
 app.MapGet("/", () => "API de Salas");
@@ -56,7 +58,6 @@ app.MapPut("/api/sala/alterar/{nome}", ([FromRoute] string nome, [FromBody] Sala
         return Results.NotFound(new { message = $"Sala com nome '{nome}' não encontrada." });
     }
 
-    // Atualizar os campos da sala
     sala.Nome = salaAtualizada.Nome;
     sala.Capacidade = salaAtualizada.Capacidade;
 
@@ -70,6 +71,63 @@ app.MapGet("/api/sala/buscar/{nome}", (string nome) =>
     if (sala != null)
     {
         return Results.Ok(sala);
+    }
+    return Results.NotFound();
+});
+
+//POST: /api/reserva/cadastrar
+app.MapPost("/api/reserva/cadastrar", ([FromBody] Reserva reserva) =>
+{
+    var sala = salas.FirstOrDefault(p => p.Nome.Equals(reserva.NomeSala, StringComparison.OrdinalIgnoreCase));
+    if (sala == null)
+    {
+        return Results.NotFound(new { message = $"Sala com nome '{reserva.NomeSala}' não encontrada." });
+    }
+
+    // Verificar se já existe uma reserva para a sala no intervalo de tempo especificado
+    var conflitoReserva = reservas.Any(r =>
+        r.NomeSala.Equals(reserva.NomeSala, StringComparison.OrdinalIgnoreCase) &&
+        ((reserva.DataInicio >= r.DataInicio && reserva.DataInicio < r.DataFim) ||
+        (reserva.DataFim > r.DataInicio && reserva.DataFim <= r.DataFim) ||
+        (reserva.DataInicio <= r.DataInicio && reserva.DataFim >= r.DataFim)));
+
+    if (conflitoReserva)
+    {
+        return Results.Conflict(new { message = "Já existe uma reserva para esta sala no intervalo de tempo especificado." });
+    }
+
+    reservas.Add(reserva);
+    return Results.Created("", reserva);
+});
+//GET: /api/reserva/listar
+app.MapGet("/api/reserva/listar", () =>
+{
+    if (reservas.Count > 0)
+    {
+        return Results.Ok(reservas);
+    }
+    return Results.NotFound();
+});
+
+//GET: /api/reserva/buscar/{id}
+app.MapGet("/api/reserva/buscar/{id}", (string id) =>
+{
+    var reserva = reservas.FirstOrDefault(r => r.Id == id);
+    if (reserva != null)
+    {
+        return Results.Ok(reserva);
+    }
+    return Results.NotFound();
+});
+
+//DELETE: /api/reserva/remover/{id}
+app.MapDelete("/api/reserva/remover/{id}", (string id) =>
+{
+    var reserva = reservas.FirstOrDefault(r => r.Id == id);
+    if (reserva != null)
+    {
+        reservas.Remove(reserva);
+        return Results.NoContent();
     }
     return Results.NotFound();
 });

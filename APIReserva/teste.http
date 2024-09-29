@@ -35,3 +35,31 @@ Content-Type: application/json
 
 ### Buscar sala específica
 GET http://localhost:5136/api/sala/buscar/Arquibancada
+
+### Cadastrar Reserva
+POST http://localhost:5136/api/reserva/cadastrar
+Content-Type: application/json
+
+{
+    "NomeSala": "Sala 2 - Flexibilidade",
+    "DataInicio": "2024-09-29T09:00:00",
+    "DataFim": "2024-09-29T11:00:00",
+    "NomePessoa": "João Silva"
+}
+
+### Listar
+GET http://localhost:5136/api/reserva/listar
+
+### Remover
+DELETE http://localhost:5136/api/reserva/remover/aea9d962-61a7-45f1-86ff-b14787436c97
+Content-Type: application/json
+
+{
+    "NomeSala": "Sala 1 Transparencia",
+    "DataInicio": "2024-09-29T09:00:00",
+    "DataFim": "2024-09-29T11:00:00",
+    "NomePessoa": "João Silva"
+}
+
+### Buscar sala específica
+GET http://localhost:5136/api/reserva/buscar/
