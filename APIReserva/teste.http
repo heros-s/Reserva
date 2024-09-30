@@ -1,9 +1,11 @@
-// Teste.http
+# Teste.http
 
-### Requisição para a raiz da aplicação
+## Requisição para a raiz
 GET http://localhost:5136
 
-### Cadastrar
+# REQUISIÇÕES DAS SALAS
+
+## Cadastrar
 POST http://localhost:5136/api/sala/cadastrar
 Content-Type: application/json
 
@@ -12,10 +14,10 @@ Content-Type: application/json
     "capacidade" : 12
 }
 
-### Listar
+## Listar
 GET http://localhost:5136/api/sala/listar
 
-### Alterar
+## Alterar
 PUT http://localhost:5136/api/sala/alterar/Arquibancada
 Content-Type: application/json
 
@@ -24,7 +26,7 @@ Content-Type: application/json
     "capacidade" : 8
 }
 
-### Remover
+## Remover
 DELETE http://localhost:5136/api/sala/remover
 Content-Type: application/json
 
@@ -33,10 +35,12 @@ Content-Type: application/json
     "capacidade" : 2
 }
 
-### Buscar sala específica
+## Buscar sala específica
 GET http://localhost:5136/api/sala/buscar/Arquibancada
 
-### Cadastrar Reserva
+# REQUISIÇÕES DAS RESERVAS
+
+## Cadastrar Reserva
 POST http://localhost:5136/api/reserva/cadastrar
 Content-Type: application/json
 
@@ -47,10 +51,10 @@ Content-Type: application/json
     "NomePessoa": "João Silva"
 }
 
-### Listar
+## Listar
 GET http://localhost:5136/api/reserva/listar
 
-### Remover
+## Remover
 DELETE http://localhost:5136/api/reserva/remover/aea9d962-61a7-45f1-86ff-b14787436c97
 Content-Type: application/json
 
@@ -61,5 +65,5 @@ Content-Type: application/json
     "NomePessoa": "João Silva"
 }
 
-### Buscar reserva específica
+## Buscar reserva específica
 GET http://localhost:5136/api/reserva/buscar/
