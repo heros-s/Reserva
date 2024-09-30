@@ -92,8 +92,8 @@ app.MapPost("/api/reserva/cadastrar", async (AppDbContext db, [FromBody] Reserva
     var conflitoReserva = await db.Reservas.AnyAsync(r =>
         r.NomeSala.ToLower() == reserva.NomeSala.ToLower() &&
         ((reserva.DataInicio >= r.DataInicio && reserva.DataInicio < r.DataFim) ||
-         (reserva.DataFim > r.DataInicio && reserva.DataFim <= r.DataFim) ||
-         (reserva.DataInicio <= r.DataInicio && reserva.DataFim >= r.DataFim)));
+        (reserva.DataFim > r.DataInicio && reserva.DataFim <= r.DataFim) ||
+        (reserva.DataInicio <= r.DataInicio && reserva.DataFim >= r.DataFim)));
 
     if (conflitoReserva)
     {

@@ -8,20 +8,20 @@ POST http://localhost:5136/api/sala/cadastrar
 Content-Type: application/json
 
 {
-    "nome" : "Sala 5 - Privacidade", 
-    "capacidade" : 1
+    "nome" : "Arquibancada", 
+    "capacidade" : 12
 }
 
 ### Listar
 GET http://localhost:5136/api/sala/listar
 
 ### Alterar
-PUT http://localhost:5136/api/sala/alterar/Sala%201%20Transparencia
+PUT http://localhost:5136/api/sala/alterar/Arquibancada
 Content-Type: application/json
 
 {
-    "nome" : "Sala 1 - Transparencia",
-    "capacidade" : 2
+    "nome" : "Agrupamento",
+    "capacidade" : 8
 }
 
 ### Remover
@@ -61,5 +61,5 @@ Content-Type: application/json
     "NomePessoa": "João Silva"
 }
 
-### Buscar sala específica
+### Buscar reserva específica
 GET http://localhost:5136/api/reserva/buscar/
