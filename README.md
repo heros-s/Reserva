@@ -1,7 +1,7 @@
 # Sistema Reserva de Salas
-Trabalho de Desenvolvimento de Software Visual
+Trabalho de Desenvolvimento de Software Visual\
+4º Semestre BSI\
 Segunda-Feira - Osório - Noite
-4º Semestre BSI
 
-Felipe Zgoda Borges
+Felipe Zgoda Borges\
 Heros de Oliveira Freitas Dinão
