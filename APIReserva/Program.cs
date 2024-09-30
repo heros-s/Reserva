@@ -17,10 +17,10 @@ using (var scope = app.Services.CreateScope())
     dbContext.Database.Migrate();
 }
 
-//GET: /
+// GET: /
 app.MapGet("/", () => "API de Salas");
 
-//GET: /api/sala/listar
+// GET: /api/sala/listar
 app.MapGet("/api/sala/listar", async (AppDbContext db) =>
 {
     var salas = await db.Salas.ToListAsync();
@@ -31,7 +31,7 @@ app.MapGet("/api/sala/listar", async (AppDbContext db) =>
     return Results.NotFound();
 });
 
-//POST: /api/sala/cadastrar/
+// POST: /api/sala/cadastrar/
 app.MapPost("/api/sala/cadastrar", async (AppDbContext db, [FromBody] Sala sala) =>
 {
     db.Salas.Add(sala);
@@ -39,7 +39,7 @@ app.MapPost("/api/sala/cadastrar", async (AppDbContext db, [FromBody] Sala sala)
     return Results.Created("", sala);
 });
 
-//POST: /api/sala/remover
+// POST: /api/sala/remover
 app.MapDelete("/api/sala/remover", async (AppDbContext db, [FromBody] Sala sala) =>
 {
     var salaParaRemover = await db.Salas.FirstOrDefaultAsync(p => p.Nome == sala.Nome);
@@ -68,7 +68,7 @@ app.MapPut("/api/sala/alterar/{nome}", async (AppDbContext db, [FromRoute] strin
     return Results.Ok(sala);
 });
 
-//GET: /api/sala/buscar/{nome}
+// GET: /api/sala/buscar/{nome}
 app.MapGet("/api/sala/buscar/{nome}", async (AppDbContext db, string nome) =>
 {
     var sala = await db.Salas.FirstOrDefaultAsync(p => p.Nome.ToLower() == nome.ToLower());
@@ -79,7 +79,7 @@ app.MapGet("/api/sala/buscar/{nome}", async (AppDbContext db, string nome) =>
     return Results.NotFound();
 });
 
-//POST: /api/reserva/cadastrar
+// POST: /api/reserva/cadastrar
 app.MapPost("/api/reserva/cadastrar", async (AppDbContext db, [FromBody] Reserva reserva) =>
 {
     var sala = await db.Salas.FirstOrDefaultAsync(p => p.Nome.ToLower() == reserva.NomeSala.ToLower());
@@ -88,7 +88,7 @@ app.MapPost("/api/reserva/cadastrar", async (AppDbContext db, [FromBody] Reserva
         return Results.NotFound(new { message = $"Sala com nome '{reserva.NomeSala}' não encontrada." });
     }
 
-    // Verificar se já existe uma reserva para a sala no intervalo de tempo especificado
+    // Verificar se já existe reserva
     var conflitoReserva = await db.Reservas.AnyAsync(r =>
         r.NomeSala.ToLower() == reserva.NomeSala.ToLower() &&
         ((reserva.DataInicio >= r.DataInicio && reserva.DataInicio < r.DataFim) ||
@@ -105,7 +105,7 @@ app.MapPost("/api/reserva/cadastrar", async (AppDbContext db, [FromBody] Reserva
     return Results.Created("", reserva);
 });
 
-//GET: /api/reserva/listar
+// GET: /api/reserva/listar
 app.MapGet("/api/reserva/listar", async (AppDbContext db) =>
 {
     var reservas = await db.Reservas.ToListAsync();
@@ -116,7 +116,7 @@ app.MapGet("/api/reserva/listar", async (AppDbContext db) =>
     return Results.NotFound();
 });
 
-//GET: /api/reserva/buscar/{id}
+// GET: /api/reserva/buscar/{id}
 app.MapGet("/api/reserva/buscar/{id}", async (AppDbContext db, string id) =>
 {
     var reserva = await db.Reservas.FirstOrDefaultAsync(r => r.Id == id);
@@ -127,7 +127,7 @@ app.MapGet("/api/reserva/buscar/{id}", async (AppDbContext db, string id) =>
     return Results.NotFound();
 });
 
-//DELETE: /api/reserva/remover/{id}
+// DELETE: /api/reserva/remover/{id}
 app.MapDelete("/api/reserva/remover/{id}", async (AppDbContext db, string id) =>
 {
     var reserva = await db.Reservas.FirstOrDefaultAsync(r => r.Id == id);
