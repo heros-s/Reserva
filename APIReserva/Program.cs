@@ -1,5 +1,6 @@
 // Program.cs
 
+using APIReserva.data;
 using APIReserva.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
