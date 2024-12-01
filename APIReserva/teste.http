@@ -10,7 +10,7 @@ POST http://localhost:5136/api/sala/cadastrar
 Content-Type: application/json
 
 {
-    "nome" : "Sala de Teste", 
+    "nome" : "Sala de Teste 2", 
     "capacidade" : 4
 }
 
@@ -31,7 +31,7 @@ DELETE http://localhost:5136/api/sala/remover
 Content-Type: application/json
 
 {
-    "nome" : "Sala de Teste"
+    "nome" : "Sala 1 - Transparencia"
 }
 
 ### Buscar sala específica
@@ -44,7 +44,7 @@ POST http://localhost:5136/api/reserva/cadastrar
 Content-Type: application/json
 
 {
-    "NomeSala": "Sala de Teste",
+    "NomeSala": "Sala de Teste 2",
     "DataInicio": "2024-09-29T12:00:00",
     "DataFim": "2024-09-29T13:00:00",
     "NomePessoa": "João Silva"
