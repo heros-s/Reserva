@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
+import { useForm, Controller } from 'react-hook-form';
+import { toast } from 'react-toastify';
 import api from '../services/api';
 
 interface Sala {
@@ -16,12 +18,7 @@ interface Reserva {
 const ReservaForm: React.FC = () => {
   const { id } = useParams();
   const navigate = useNavigate();
-  const [reserva, setReserva] = useState<Reserva>({
-    id: '',
-    sala: { nome: '' },
-    dataHoraInicio: '',
-    dataHoraFim: '',
-  });
+  const { control, handleSubmit, reset } = useForm<Reserva>();
   const [salas, setSalas] = useState<Sala[]>([]);
 
   useEffect(() => {
@@ -30,8 +27,7 @@ const ReservaForm: React.FC = () => {
         const response = await api.get('/sala/listar');
         setSalas(response.data);
       } catch (error) {
-        console.error('Erro ao buscar salas:', error);
-        // Exibir mensagem de erro para o usuário
+        toast.error('Erro ao buscar salas');
       }
     };
 
@@ -39,69 +35,72 @@ const ReservaForm: React.FC = () => {
       if (id) {
         try {
           const response = await api.get(`/reserva/buscar/${id}`);
-          setReserva(response.data);
+          reset(response.data);
         } catch (error) {
-          console.error('Erro ao buscar reserva:', error);
-          // Exibir mensagem de erro para o usuário
+          toast.error('Erro ao buscar reserva');
         }
       }
     };
 
     buscarSalas();
     buscarReserva();
-  }, [id]);
+  }, [id, reset]);
 
-  const handleSubmit = async (event: React.FormEvent) => {
-    event.preventDefault();
+  const onSubmit = async (data: Reserva) => {
     try {
       if (id) {
-        await api.put(`/reserva/alterar/${id}`, reserva);
+        await api.put(`/reserva/alterar/${id}`, data);
+        toast.success('Reserva atualizada com sucesso');
       } else {
-        await api.post('/reserva/cadastrar', reserva);
+        await api.post('/reserva/cadastrar', data);
+        toast.success('Reserva cadastrada com sucesso');
       }
-      navigate('/reservas'); // Redireciona para a página de reservas após o cadastro/edição
+      navigate('/reservas');
     } catch (error) {
-      console.error('Erro ao cadastrar/editar reserva:', error);
-      // Exibir mensagem de erro para o usuário
+      toast.error('Erro ao cadastrar/editar reserva');
     }
   };
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form onSubmit={handleSubmit(onSubmit)}>
       <div>
         <label htmlFor="sala">Sala:</label>
-        <select
-          id="sala"
-          value={reserva.sala.nome}
-          onChange={(e) => setReserva({ ...reserva, sala: { nome: e.target.value } })}
-          required
-        >
-          <option value="">Selecione uma sala</option>
-          {salas.map((sala) => (
-            <option key={sala.nome} value={sala.nome}>
-              {sala.nome}
-            </option>
-          ))}
-        </select>
+        <Controller
+          name="sala.nome"
+          control={control}
+          defaultValue=""
+          render={({ field }) => (
+            <select {...field} required>
+              <option value="">Selecione uma sala</option>
+              {salas.map((sala) => (
+                <option key={sala.nome} value={sala.nome}>
+                  {sala.nome}
+                </option>
+              ))}
+            </select>
+          )}
+        />
       </div>
       <div>
         <label htmlFor="dataHoraInicio">Início:</label>
-        <input
-          type="datetime-local"
-          id="dataHoraInicio"
-          value={reserva.dataHoraInicio}
-          onChange={(e) => setReserva({ ...reserva, dataHoraInicio: e.target.value })}
-          required
+        <Controller
+          name="dataHoraInicio"
+          control={control}
+          defaultValue=""
+          render={({ field }) => (
+            <input type="datetime-local" {...field} required />
+          )}
         />
       </div>
       <div>
         <label htmlFor="dataHoraFim">Fim:</label>
-        <input
-          type="datetime-local"
-          id="dataHoraFim"
-          value={reserva.dataHoraFim}
-          onChange={(e) => setReserva({ ...reserva, dataHoraFim: e.target.value })}
-          required
+        <Controller
+          name="dataHoraFim"
+          control={control}
+          defaultValue=""
+          render={({ field }) => (
+            <input type="datetime-local" {...field} required />
+          )}
         />
       </div>
       <button type="submit">{id ? 'Atualizar' : 'Cadastrar'}</button>
