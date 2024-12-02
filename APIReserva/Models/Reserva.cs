@@ -8,6 +8,8 @@ public class Reserva
     {
         Id = Guid.NewGuid().ToString();
         CriadoEm = DateTime.Now;
+        NomeSala = string.Empty;
+        NomePessoa = string.Empty;
     }
 
     public string Id { get; set; }
